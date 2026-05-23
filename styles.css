@@ -6,7 +6,7 @@ html,
 body{
   margin:0;
   padding:0;
-  background:#f5f7fa;
+  background:#ffffff;
   font-family:Arial, Helvetica, sans-serif;
   color:#172033;
 }
@@ -20,6 +20,15 @@ body{
   max-width:1500px;
   margin:0 auto;
   padding:56px 24px 80px;
+}
+
+.wc-performance-page.is-embedded{
+  max-width:100%;
+  padding:0;
+}
+
+.wc-performance-page.is-embedded .wc-performance-card{
+  box-shadow:none;
 }
 
 .wc-performance-header{
@@ -222,6 +231,10 @@ body{
 
   .wc-performance-page{
     padding:36px 16px 60px;
+  }
+
+  .wc-performance-page.is-embedded{
+    padding:0;
   }
 
   .wc-performance-header h1{
