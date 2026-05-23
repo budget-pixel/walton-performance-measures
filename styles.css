@@ -307,3 +307,310 @@ body{
     font-size:11px;
   }
 }
+*{
+  box-sizing:border-box;
+}
+
+html,
+body{
+  margin:0;
+  padding:0;
+  background:#ffffff;
+  font-family:Arial, Helvetica, sans-serif;
+  color:#172033;
+}
+
+body{
+  overflow-x:hidden;
+}
+
+.wc-performance-page{
+  width:100%;
+  max-width:1500px;
+  margin:0 auto;
+  padding:32px 18px 48px;
+}
+
+.wc-performance-page.is-embedded{
+  max-width:100%;
+  padding:0;
+}
+
+.wc-performance-header{
+  margin:0 0 18px 0;
+  text-align:left;
+}
+
+.wc-performance-header h1{
+  margin:0 0 8px 0;
+  color:#172033;
+  font-size:30px;
+  line-height:1.15;
+  font-weight:800;
+  letter-spacing:-0.02em;
+}
+
+.wc-performance-header p{
+  margin:0;
+  max-width:900px;
+  color:#475467;
+  font-size:14px;
+  line-height:1.5;
+}
+
+.wc-performance-card{
+  width:100%;
+  overflow:hidden;
+  border:1px solid rgba(209,190,120,0.45);
+  border-radius:24px;
+  background:#ffffff;
+  box-shadow:
+    0 14px 34px rgba(0,98,49,0.08),
+    0 4px 12px rgba(36,52,77,0.06);
+}
+
+.wc-performance-page.is-embedded .wc-performance-card{
+  box-shadow:
+    0 14px 34px rgba(0,98,49,0.08),
+    0 4px 12px rgba(36,52,77,0.06);
+}
+
+.wc-performance-card-header{
+  padding:16px 18px;
+  background:#ffffff;
+  border-bottom:1px solid rgba(36,52,77,0.10);
+}
+
+.wc-performance-card-header h2{
+  display:none;
+}
+
+.wc-performance-card-header > span{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  margin:0 0 10px 0;
+  padding:6px 12px;
+  border-radius:999px;
+  background:rgba(0,98,49,0.08);
+  color:#006231;
+  font-size:11px;
+  line-height:1;
+  font-weight:800;
+  letter-spacing:.06em;
+  text-transform:uppercase;
+}
+
+.wc-performance-goal-block{
+  margin:0;
+  padding:0;
+  background:transparent;
+  border:0;
+}
+
+.wc-performance-goal-label{
+  display:block;
+  margin:0 0 6px 0;
+  color:#006231;
+  font-size:12px;
+  line-height:1.2;
+  font-weight:800;
+  letter-spacing:.08em;
+  text-transform:uppercase;
+}
+
+.wc-performance-card-header p{
+  margin:0;
+  max-width:none;
+  color:#344054;
+  font-size:14px;
+  line-height:1.55;
+}
+
+.wc-performance-table-wrap{
+  width:100%;
+  overflow:auto;
+  -webkit-overflow-scrolling:touch;
+  background:#ffffff;
+}
+
+.wc-performance-table{
+  width:max-content;
+  min-width:100%;
+  border-collapse:separate;
+  border-spacing:0;
+  background:#ffffff;
+  font-family:Arial, Helvetica, sans-serif;
+  font-size:14px;
+}
+
+.wc-performance-table th,
+.wc-performance-table td{
+  padding:12px 14px;
+  border:0;
+  border-bottom:1px solid rgba(36,52,77,0.10);
+  vertical-align:middle;
+}
+
+.wc-performance-table thead th{
+  background:linear-gradient(135deg,#006231 0%,#0b7d45 100%);
+  color:#ffffff;
+  font-size:13px;
+  line-height:1.25;
+  font-weight:700;
+  letter-spacing:0;
+  text-transform:none;
+  text-align:center;
+  border-bottom:4px solid #d1be78;
+  white-space:normal;
+}
+
+.wc-performance-table thead th:first-child{
+  width:28%;
+  text-align:left;
+}
+
+.wc-performance-table thead th:nth-child(2){
+  width:30%;
+  text-align:left;
+}
+
+.wc-performance-table thead th:nth-child(3),
+.wc-performance-table thead th:nth-child(4),
+.wc-performance-table thead th:nth-child(5),
+.wc-performance-table thead th:nth-child(6){
+  width:10.5%;
+}
+
+.wc-performance-table tbody tr:nth-child(even) th,
+.wc-performance-table tbody tr:nth-child(even) td{
+  background:rgba(0,98,49,0.04);
+}
+
+.wc-performance-table tbody tr:hover th,
+.wc-performance-table tbody tr:hover td{
+  background:rgba(209,190,120,0.18);
+}
+
+.wc-performance-table td{
+  color:#344054;
+  background:#ffffff;
+  font-size:14px;
+  line-height:1.5;
+  overflow-wrap:break-word;
+}
+
+.wc-performance-objective{
+  color:#172033;
+  font-weight:700;
+  text-align:left;
+  background:#ffffff;
+}
+
+.wc-performance-measure{
+  color:#344054;
+  text-align:left;
+  background:#ffffff;
+}
+
+.wc-performance-value{
+  color:#344054;
+  text-align:center;
+  white-space:nowrap;
+  background:#ffffff;
+}
+
+.wc-performance-code,
+.wc-performance-goal{
+  color:#172033;
+  background:#ffffff;
+}
+
+.wc-performance-note{
+  display:block;
+  width:100%;
+  padding:12px 16px 16px;
+  background:#ffffff;
+  border-top:0;
+  color:#667085;
+  font-size:12px;
+  line-height:1.5;
+  font-style:italic;
+  white-space:normal;
+  overflow:visible;
+}
+
+.wc-performance-note a{
+  color:#006231;
+  font-weight:700;
+  text-decoration:none;
+  white-space:normal;
+}
+
+.wc-performance-note a:hover{
+  text-decoration:underline;
+}
+
+.wc-performance-empty{
+  padding:18px;
+  background:#ffffff;
+  border:1px solid #d0d5dd;
+  border-radius:18px;
+  color:#475467;
+  font-size:14px;
+  text-align:center;
+}
+
+@media(max-width:900px){
+
+  .wc-performance-page{
+    padding:24px 12px 36px;
+  }
+
+  .wc-performance-page.is-embedded{
+    padding:0;
+  }
+
+  .wc-performance-header h1{
+    font-size:24px;
+  }
+
+  .wc-performance-header p{
+    font-size:13px;
+  }
+
+  .wc-performance-card{
+    border-radius:18px;
+  }
+
+  .wc-performance-card-header{
+    padding:14px;
+  }
+
+  .wc-performance-card-header p{
+    font-size:13px;
+  }
+
+  .wc-performance-table{
+    min-width:860px;
+  }
+
+  .wc-performance-table th,
+  .wc-performance-table td{
+    padding:10px 12px;
+  }
+
+  .wc-performance-table thead th{
+    font-size:12px;
+  }
+
+  .wc-performance-table td{
+    font-size:13px;
+    line-height:1.4;
+  }
+
+  .wc-performance-note{
+    padding:10px 14px 14px;
+    font-size:11px;
+  }
+}
