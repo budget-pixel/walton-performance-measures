@@ -61,28 +61,35 @@ body{
   background:linear-gradient(135deg,#006231 0%,#0a7b45 100%);
   border-bottom:4px solid #d1be78;
   color:#ffffff;
+  display:flex;
+  flex-direction:column;
+  gap:0;
 }
 
-.wc-performance-card-header span{
+.wc-performance-card-header > span{
+  order:2;
   display:inline-flex;
   align-items:center;
-  justify-content:center;
-  margin-bottom:18px;
-  padding:8px 14px;
+  justify-content:flex-start;
+  width:fit-content;
+  margin:0 0 14px 0;
+  padding:7px 12px;
   border-radius:999px;
-  background:rgba(255,255,255,0.14);
-  color:#ffffff;
-  font-size:12px;
+  background:rgba(209,190,120,0.18);
+  border:1px solid rgba(209,190,120,0.36);
+  color:#f5e7b2;
+  font-size:11px;
   font-weight:800;
   letter-spacing:.08em;
   text-transform:uppercase;
 }
 
 .wc-performance-card-header h2{
+  order:1;
   margin:0 0 16px 0;
   color:#ffffff;
-  font-size:34px;
-  line-height:1.12;
+  font-size:36px;
+  line-height:1.1;
   font-weight:800;
   letter-spacing:-0.02em;
 }
@@ -96,38 +103,47 @@ body{
 }
 
 .wc-performance-goal-block{
-  margin-top:6px;
+  order:3;
+  margin-top:0;
+  padding:18px 20px;
+  border-radius:18px;
+  background:rgba(255,255,255,0.10);
+  border:1px solid rgba(255,255,255,0.14);
 }
 
 .wc-performance-goal-label{
-  display:inline-flex;
-  align-items:center;
-  justify-content:center;
-  margin:0 0 12px 0;
-  padding:7px 12px;
-  border-radius:999px;
-  background:rgba(209,190,120,0.18);
-  border:1px solid rgba(209,190,120,0.34);
+  display:block;
+  margin:0 0 8px 0;
+  padding:0;
+  border-radius:0;
+  background:transparent;
+  border:0;
   color:#f5e7b2;
-  font-size:11px;
+  font-size:12px;
+  line-height:1.2;
   font-weight:800;
   letter-spacing:.08em;
   text-transform:uppercase;
 }
 
 .wc-performance-note{
-  padding:18px 24px 22px;
+  display:block;
+  width:100%;
+  padding:20px 26px 28px;
   background:#fcfdfc;
   border-top:1px solid rgba(23,32,51,0.06);
   color:#667085;
   font-size:13px;
-  line-height:1.65;
+  line-height:1.7;
+  white-space:normal;
+  overflow:visible;
 }
 
 .wc-performance-note a{
   color:#006231;
-  font-weight:700;
+  font-weight:800;
   text-decoration:none;
+  white-space:normal;
 }
 
 .wc-performance-note a:hover{
@@ -228,8 +244,13 @@ body{
     font-size:28px;
   }
 
+  .wc-performance-goal-block{
+    padding:16px;
+    border-radius:16px;
+  }
+
   .wc-performance-note{
-    padding:16px 18px 20px;
+    padding:16px 18px 26px;
     font-size:12px;
   }
 
