@@ -1,7 +1,11 @@
-const app = document.getElementById("app");
+const app = document.getElementById("app") || document.getElementById("wc-performance-measures");
 
 const urlParams = new URLSearchParams(window.location.search);
-const selectedDepartment = String(urlParams.get("department") || "").trim().toLowerCase();
+const selectedDepartment = String(
+  app?.dataset?.department ||
+  urlParams.get("department") ||
+  ""
+).trim().toLowerCase();
 
 function escapeHtml(value){
   return String(value ?? "")
@@ -78,21 +82,25 @@ function renderDepartment(record){
 }
 
 function renderApp(){
+  if(!app){
+    return;
+  }
+
   const allRecords = window.wcPerformanceMeasures || [];
   const records = allRecords.filter(record => departmentMatches(record, selectedDepartment));
   const isFiltered = Boolean(selectedDepartment);
+  const isEmbedded = app.id === "wc-performance-measures" || isFiltered;
 
   app.innerHTML = `
-    <main class="wc-performance-page">
-      <header class="wc-performance-header">
-        <h1>${isFiltered && records.length === 1 ? escapeHtml(records[0].department) : "Departmental Goals, Objectives, and Performance Measures"}</h1>
-        <p>
-          ${isFiltered && records.length === 1
-            ? "Review this department’s goals, objectives, and performance measures used to track service delivery, operational outcomes, and budget priorities."
-            : "Review departmental goals, objectives, and performance measures used to track service delivery, operational outcomes, and budget priorities."
-          }
-        </p>
-      </header>
+    <main class="wc-performance-page ${isEmbedded ? "is-embedded" : ""}">
+      ${!isEmbedded ? `
+        <header class="wc-performance-header">
+          <h1>Departmental Goals, Objectives, and Performance Measures</h1>
+          <p>
+            Review departmental goals, objectives, and performance measures used to track service delivery, operational outcomes, and budget priorities.
+          </p>
+        </header>
+      ` : ""}
 
       ${records.length
         ? `<div style="display:grid;gap:28px;">${records.map(renderDepartment).join("")}</div>`
