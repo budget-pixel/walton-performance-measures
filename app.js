@@ -1,5 +1,8 @@
 const app = document.getElementById("app");
 
+const urlParams = new URLSearchParams(window.location.search);
+const selectedDepartment = String(urlParams.get("department") || "").trim().toLowerCase();
+
 function escapeHtml(value){
   return String(value ?? "")
     .replace(/&/g,"&amp;")
@@ -7,6 +10,24 @@ function escapeHtml(value){
     .replace(/>/g,"&gt;")
     .replace(/"/g,"&quot;")
     .replace(/'/g,"&#039;");
+}
+
+function normalizeValue(value){
+  return String(value ?? "")
+    .trim()
+    .toLowerCase()
+    .replace(/&/g,"and")
+    .replace(/[^a-z0-9]+/g,"-")
+    .replace(/^-+|-+$/g,"");
+}
+
+function departmentMatches(record, selected){
+  if(!selected){
+    return true;
+  }
+
+  return normalizeValue(record.department) === normalizeValue(selected) ||
+         String(record.department || "").trim().toLowerCase() === selected;
 }
 
 function renderDepartment(record){
@@ -57,20 +78,26 @@ function renderDepartment(record){
 }
 
 function renderApp(){
-  const records = window.wcPerformanceMeasures || [];
+  const allRecords = window.wcPerformanceMeasures || [];
+  const records = allRecords.filter(record => departmentMatches(record, selectedDepartment));
+  const isFiltered = Boolean(selectedDepartment);
 
   app.innerHTML = `
     <main class="wc-performance-page">
       <header class="wc-performance-header">
-        <h1>Departmental Goals, Objectives, and Performance Measures</h1>
+        <h1>${isFiltered && records.length === 1 ? escapeHtml(records[0].department) : "Departmental Goals, Objectives, and Performance Measures"}</h1>
         <p>
-          Review departmental goals, objectives, and performance measures used to track service delivery, operational outcomes, and budget priorities.
+          ${isFiltered && records.length === 1
+            ? "Review this department’s goals, objectives, and performance measures used to track service delivery, operational outcomes, and budget priorities."
+            : "Review departmental goals, objectives, and performance measures used to track service delivery, operational outcomes, and budget priorities."
+          }
         </p>
       </header>
 
-      <div style="display:grid;gap:28px;">
-        ${records.map(renderDepartment).join("")}
-      </div>
+      ${records.length
+        ? `<div style="display:grid;gap:28px;">${records.map(renderDepartment).join("")}</div>`
+        : `<div class="wc-performance-empty">No department performance measures found for this selection.</div>`
+      }
     </main>
   `;
 }
