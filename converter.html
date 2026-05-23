@@ -1,5 +1,3 @@
-
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -209,7 +207,7 @@
       <textarea id="output" spellcheck="false" placeholder="Generated code will appear here..."></textarea>
 
       <p class="wc-converter-help">
-        Expected column headers: <code>Department</code>, <code>Code Link</code>, <code>Departmental Goal</code>, <code>Objectives</code>, <code>Performance Measures</code>, <code>Actual 2022-23</code>, <code>Actual 2023-24</code>, <code>Projected 2024-25</code>, and <code>Projected 2025-26</code>. The converter also accepts 2023-24 through 2026-27 headers.
+        Expected column headers: <code>Department</code>, <code>Code Link</code>, <code>Departmental Goal</code>, <code>Objective</code> or <code>Objectives</code>, <code>Performance Measure</code> or <code>Performance Measures</code>, <code>Actual 2022-23</code>, <code>Actual 2023-24</code>, <code>Projected 2024-25</code>, and <code>Projected 2025-26</code>. The converter also accepts 2023-24 through 2026-27 headers.
       </p>
     </section>
   </main>
@@ -273,8 +271,14 @@
       if(
         normalized.includes("code link") &&
         normalized.includes("departmental goal") &&
-        normalized.includes("objectives") &&
-        normalized.includes("performance measures")
+        (
+          normalized.includes("objective") ||
+          normalized.includes("objectives")
+        ) &&
+        (
+          normalized.includes("performance measure") ||
+          normalized.includes("performance measures")
+        )
       ){
         return i;
       }
@@ -462,4 +466,4 @@
 })();
 </script>
 </body>
-</html>converter.html
+</html>
