@@ -1,0 +1,465 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Walton Performance Measures Converter</title>
+
+<script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+
+<style>
+  *{
+    box-sizing:border-box;
+  }
+
+  body{
+    margin:0;
+    padding:0;
+    background:#f5f7fa;
+    color:#172033;
+    font-family:Arial, Helvetica, sans-serif;
+  }
+
+  .wc-converter-page{
+    width:100%;
+    max-width:1180px;
+    margin:0 auto;
+    padding:54px 24px 80px;
+  }
+
+  .wc-converter-hero{
+    margin:0 0 24px 0;
+    padding:36px 34px;
+    border-radius:30px;
+    background:#006231;
+    color:#ffffff;
+    border-bottom:4px solid #d1be78;
+    box-shadow:0 18px 42px rgba(0,98,49,0.12);
+  }
+
+  .wc-converter-hero h1{
+    margin:0 0 12px 0;
+    color:#ffffff;
+    font-size:38px;
+    line-height:1.1;
+    font-weight:800;
+    letter-spacing:-.02em;
+  }
+
+  .wc-converter-hero p{
+    margin:0;
+    max-width:820px;
+    color:rgba(255,255,255,0.88);
+    font-size:16px;
+    line-height:1.7;
+  }
+
+  .wc-converter-card{
+    width:100%;
+    padding:28px;
+    border-radius:26px;
+    background:#ffffff;
+    border:1px solid rgba(209,190,120,0.34);
+    box-shadow:0 12px 30px rgba(36,52,77,0.07);
+  }
+
+  .wc-converter-controls{
+    display:grid;
+    gap:14px;
+    margin:0 0 22px 0;
+  }
+
+  .wc-converter-controls label{
+    display:block;
+    color:#172033;
+    font-size:14px;
+    font-weight:800;
+  }
+
+  .wc-converter-controls input[type="file"]{
+    width:100%;
+    padding:16px;
+    border:1px dashed rgba(0,98,49,0.36);
+    border-radius:18px;
+    background:#f8faf9;
+    color:#172033;
+    font-size:14px;
+  }
+
+  .wc-converter-actions{
+    display:flex;
+    flex-wrap:wrap;
+    gap:12px;
+    margin:0 0 22px 0;
+  }
+
+  .wc-converter-actions button{
+    appearance:none;
+    border:0;
+    border-radius:999px;
+    min-height:44px;
+    padding:0 18px;
+    background:#006231;
+    color:#ffffff;
+    font-size:13px;
+    font-weight:800;
+    letter-spacing:.04em;
+    text-transform:uppercase;
+    cursor:pointer;
+  }
+
+  .wc-converter-actions button.secondary{
+    background:#ffffff;
+    color:#006231;
+    border:1px solid rgba(0,98,49,0.22);
+  }
+
+  .wc-converter-status{
+    margin:0 0 18px 0;
+    padding:14px 16px;
+    border-radius:16px;
+    background:#f8faf9;
+    color:#475467;
+    font-size:14px;
+    line-height:1.5;
+  }
+
+  .wc-converter-status strong{
+    color:#006231;
+  }
+
+  .wc-converter-output-label{
+    display:block;
+    margin:0 0 8px 0;
+    color:#172033;
+    font-size:14px;
+    font-weight:800;
+  }
+
+  #output{
+    width:100%;
+    min-height:520px;
+    padding:18px;
+    border:1px solid rgba(23,32,51,0.12);
+    border-radius:18px;
+    background:#101828;
+    color:#e6edf3;
+    font-family:Menlo, Consolas, Monaco, monospace;
+    font-size:12px;
+    line-height:1.55;
+    resize:vertical;
+    white-space:pre;
+    overflow:auto;
+  }
+
+  .wc-converter-help{
+    margin:20px 0 0 0;
+    color:#667085;
+    font-size:13px;
+    line-height:1.6;
+  }
+
+  .wc-converter-help code{
+    color:#006231;
+    font-weight:800;
+  }
+
+  @media(max-width:700px){
+    .wc-converter-page{
+      padding:34px 16px 60px;
+    }
+
+    .wc-converter-hero,
+    .wc-converter-card{
+      border-radius:22px;
+      padding:24px 20px;
+    }
+
+    .wc-converter-hero h1{
+      font-size:30px;
+    }
+  }
+</style>
+</head>
+
+<body>
+  <main class="wc-converter-page">
+    <section class="wc-converter-hero">
+      <h1>Performance Measures Converter</h1>
+      <p>Upload the departmental goals, objectives, and performance measures workbook. This tool converts the spreadsheet into paste-ready JavaScript for <strong>performance-measures.js</strong>.</p>
+    </section>
+
+    <section class="wc-converter-card">
+      <div class="wc-converter-controls">
+        <label for="fileInput">Excel workbook</label>
+        <input id="fileInput" type="file" accept=".xlsx,.xls,.csv">
+      </div>
+
+      <div class="wc-converter-actions">
+        <button type="button" id="convertBtn">Convert Workbook</button>
+        <button type="button" id="copyBtn" class="secondary">Copy Code</button>
+        <button type="button" id="downloadBtn" class="secondary">Download JS</button>
+      </div>
+
+      <div id="status" class="wc-converter-status">Upload a workbook to begin.</div>
+
+      <label class="wc-converter-output-label" for="output">Generated performance-measures.js</label>
+      <textarea id="output" spellcheck="false" placeholder="Generated code will appear here..."></textarea>
+
+      <p class="wc-converter-help">
+        Expected column headers: <code>Department</code>, <code>Code Link</code>, <code>Departmental Goal</code>, <code>Objectives</code>, <code>Performance Measures</code>, <code>Actual 2022-23</code>, <code>Actual 2023-24</code>, <code>Projected 2024-25</code>, and <code>Projected 2025-26</code>. The converter also accepts 2023-24 through 2026-27 headers.
+      </p>
+    </section>
+  </main>
+
+<script>
+(function(){
+  const fileInput = document.getElementById("fileInput");
+  const convertBtn = document.getElementById("convertBtn");
+  const copyBtn = document.getElementById("copyBtn");
+  const downloadBtn = document.getElementById("downloadBtn");
+  const status = document.getElementById("status");
+  const output = document.getElementById("output");
+
+  function setStatus(message){
+    status.innerHTML = message;
+  }
+
+  function clean(value){
+    if(value === null || value === undefined){
+      return "";
+    }
+    return String(value).replace(/\s+/g," ").trim();
+  }
+
+  function normalizeHeader(value){
+    return clean(value)
+      .toLowerCase()
+      .replace(/[’']/g, "")
+      .replace(/[^a-z0-9]+/g, " ")
+      .trim();
+  }
+
+  function findColumn(headerMap, options){
+    for(const option of options){
+      const key = normalizeHeader(option);
+      if(headerMap[key] !== undefined){
+        return headerMap[key];
+      }
+    }
+    return -1;
+  }
+
+  function getCell(row, index){
+    if(index < 0){
+      return "";
+    }
+    return clean(row[index]);
+  }
+
+  function rowsFromSheet(sheet){
+    return XLSX.utils.sheet_to_json(sheet, {
+      header:1,
+      defval:"",
+      blankrows:false
+    });
+  }
+
+  function detectHeaderRow(rows){
+    for(let i = 0; i < Math.min(rows.length, 25); i++){
+      const normalized = rows[i].map(normalizeHeader).join(" | ");
+      if(
+        normalized.includes("code link") &&
+        normalized.includes("departmental goal") &&
+        normalized.includes("objectives") &&
+        normalized.includes("performance measures")
+      ){
+        return i;
+      }
+    }
+    return -1;
+  }
+
+  function convertWorkbook(workbook){
+    const recordsByDepartment = new Map();
+    const warnings = [];
+
+    workbook.SheetNames.forEach(sheetName => {
+      const sheet = workbook.Sheets[sheetName];
+      const rows = rowsFromSheet(sheet);
+      const headerRowIndex = detectHeaderRow(rows);
+
+      if(headerRowIndex === -1){
+        warnings.push(`Skipped sheet "${sheetName}" because no performance-measure header row was found.`);
+        return;
+      }
+
+      const headerRow = rows[headerRowIndex];
+      const headerMap = {};
+      headerRow.forEach((header, index) => {
+        const normalized = normalizeHeader(header);
+        if(normalized){
+          headerMap[normalized] = index;
+        }
+      });
+
+      const deptCol = findColumn(headerMap, ["Department", "Department Name"]);
+      const codeCol = findColumn(headerMap, ["Code Link"]);
+      const goalCol = findColumn(headerMap, ["Departmental Goal", "Department Goal"]);
+      const objectiveCol = findColumn(headerMap, ["Objectives", "Objective"]);
+      const measureCol = findColumn(headerMap, ["Performance Measures", "Performance Measure"]);
+      const actual2023Col = findColumn(headerMap, ["Actual 2022-23", "Actual 2023-24"]);
+      const actual2024Col = findColumn(headerMap, ["Actual 2023-24", "Actual 2024-25"]);
+      const projected2025Col = findColumn(headerMap, ["Projected 2024-25", "Projected 2025-26"]);
+      const projected2026Col = findColumn(headerMap, ["Projected 2025-26", "Projected 2026-27"]);
+
+      let currentDepartment = "";
+      let currentCodeLink = "";
+      let currentGoal = "";
+
+      for(let r = headerRowIndex + 1; r < rows.length; r++){
+        const row = rows[r];
+
+        const department = getCell(row, deptCol);
+        const codeLink = getCell(row, codeCol);
+        const goal = getCell(row, goalCol);
+        const objective = getCell(row, objectiveCol);
+        const measure = getCell(row, measureCol);
+
+        if(department){
+          currentDepartment = department;
+        }else if(sheetName && !currentDepartment){
+          currentDepartment = sheetName;
+        }
+
+        if(codeLink){
+          currentCodeLink = codeLink;
+        }
+
+        if(goal){
+          currentGoal = goal;
+        }
+
+        if(!objective && !measure){
+          continue;
+        }
+
+        if(!currentDepartment){
+          warnings.push(`Skipped a row on sheet "${sheetName}" because no department name was available.`);
+          continue;
+        }
+
+        if(!recordsByDepartment.has(currentDepartment)){
+          recordsByDepartment.set(currentDepartment, {
+            department: currentDepartment,
+            codeLink: currentCodeLink,
+            goal: currentGoal,
+            rows: []
+          });
+        }
+
+        const record = recordsByDepartment.get(currentDepartment);
+
+        if(currentCodeLink && !record.codeLink){
+          record.codeLink = currentCodeLink;
+        }
+
+        if(currentGoal && !record.goal){
+          record.goal = currentGoal;
+        }
+
+        record.rows.push({
+          objective: objective,
+          measure: measure,
+          actual2023: getCell(row, actual2023Col),
+          actual2024: getCell(row, actual2024Col),
+          projected2025: getCell(row, projected2025Col),
+          projected2026: getCell(row, projected2026Col)
+        });
+      }
+    });
+
+    const records = Array.from(recordsByDepartment.values())
+      .filter(record => record.rows.length)
+      .sort((a,b) => a.department.localeCompare(b.department));
+
+    const code = "window.wcPerformanceMeasures = " + JSON.stringify(records, null, 2) + ";\n";
+
+    return {
+      records,
+      warnings,
+      code
+    };
+  }
+
+  convertBtn.addEventListener("click", () => {
+    const file = fileInput.files && fileInput.files[0];
+
+    if(!file){
+      setStatus("Select an Excel workbook first.");
+      return;
+    }
+
+    const reader = new FileReader();
+
+    reader.onload = event => {
+      try{
+        const data = new Uint8Array(event.target.result);
+        const workbook = XLSX.read(data, { type:"array" });
+        const result = convertWorkbook(workbook);
+
+        output.value = result.code;
+
+        const rowCount = result.records.reduce((sum, record) => sum + record.rows.length, 0);
+        const warningText = result.warnings.length
+          ? `<br><br><strong>Warnings:</strong><br>${result.warnings.map(w => "• " + w).join("<br>")}`
+          : "";
+
+        setStatus(`<strong>Conversion complete.</strong> ${result.records.length} departments and ${rowCount} performance measure rows generated.${warningText}`);
+      }catch(error){
+        console.error(error);
+        setStatus("Conversion failed. Check the workbook structure and try again.");
+      }
+    };
+
+    reader.readAsArrayBuffer(file);
+  });
+
+  copyBtn.addEventListener("click", async () => {
+    if(!output.value.trim()){
+      setStatus("There is no generated code to copy yet.");
+      return;
+    }
+
+    try{
+      await navigator.clipboard.writeText(output.value);
+      setStatus("Generated code copied to clipboard.");
+    }catch(error){
+      output.select();
+      document.execCommand("copy");
+      setStatus("Generated code selected/copied. If it did not copy, press Ctrl/Cmd+C.");
+    }
+  });
+
+  downloadBtn.addEventListener("click", () => {
+    if(!output.value.trim()){
+      setStatus("There is no generated code to download yet.");
+      return;
+    }
+
+    const blob = new Blob([output.value], { type:"text/javascript;charset=utf-8" });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement("a");
+    link.href = url;
+    link.download = "performance-measures.js";
+    document.body.appendChild(link);
+    link.click();
+    link.remove();
+    URL.revokeObjectURL(url);
+  });
+})();
+</script>
+</body>
+</html>converter.html
