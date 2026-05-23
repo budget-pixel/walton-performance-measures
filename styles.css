@@ -95,6 +95,45 @@ body{
   line-height:1.75;
 }
 
+.wc-performance-goal-block{
+  margin-top:6px;
+}
+
+.wc-performance-goal-label{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  margin:0 0 12px 0;
+  padding:7px 12px;
+  border-radius:999px;
+  background:rgba(209,190,120,0.18);
+  border:1px solid rgba(209,190,120,0.34);
+  color:#f5e7b2;
+  font-size:11px;
+  font-weight:800;
+  letter-spacing:.08em;
+  text-transform:uppercase;
+}
+
+.wc-performance-note{
+  padding:18px 24px 22px;
+  background:#fcfdfc;
+  border-top:1px solid rgba(23,32,51,0.06);
+  color:#667085;
+  font-size:13px;
+  line-height:1.65;
+}
+
+.wc-performance-note a{
+  color:#006231;
+  font-weight:700;
+  text-decoration:none;
+}
+
+.wc-performance-note a:hover{
+  text-decoration:underline;
+}
+
 .wc-performance-table-wrap{
   width:100%;
   overflow-x:auto;
@@ -187,6 +226,11 @@ body{
 
   .wc-performance-card-header h2{
     font-size:28px;
+  }
+
+  .wc-performance-note{
+    padding:16px 18px 20px;
+    font-size:12px;
   }
 
   .wc-performance-table thead th{
