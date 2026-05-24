@@ -149,7 +149,7 @@ body{
   padding:8px 8px;
   border:0;
   border-bottom:1px solid rgba(36,52,77,0.10);
-  vertical-align:top;
+  vertical-align:middle;
 }
 
 .wc-performance-table thead th{
@@ -162,8 +162,10 @@ body{
   letter-spacing:0;
   text-transform:none;
   text-align:center;
+  vertical-align:middle;
   border-bottom:4px solid #d1be78;
   white-space:normal;
+  height:64px;
 }
 
 .wc-performance-table thead th:nth-child(1){
