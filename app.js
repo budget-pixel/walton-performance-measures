@@ -90,9 +90,9 @@ function renderDepartment(record){
 
               return `
                 <tr>
-                  ${isFirstRow ? `<td class="wc-performance-code" rowspan="${totalRows}">${escapeHtml(record.codeLink)}</td>` : ""}
-                  ${isFirstRow ? `<td class="wc-performance-goal" rowspan="${totalRows}">${escapeHtml(record.goal)}</td>` : ""}
-                  ${isFirstObjectiveRow ? `<td class="wc-performance-objective" rowspan="${objectiveRowspan}">${escapeHtml(row.objective)}</td>` : ""}
+                  ${isFirstRow ? `<td class="wc-performance-code wc-performance-merged-cell" rowspan="${totalRows}" style="vertical-align:middle;">${escapeHtml(record.codeLink)}</td>` : ""}
+                  ${isFirstRow ? `<td class="wc-performance-goal wc-performance-merged-cell" rowspan="${totalRows}" style="vertical-align:middle;">${escapeHtml(record.goal)}</td>` : ""}
+                  ${isFirstObjectiveRow ? `<td class="wc-performance-objective wc-performance-merged-cell" rowspan="${objectiveRowspan}" style="vertical-align:middle;">${escapeHtml(row.objective)}</td>` : ""}
                   <td class="wc-performance-measure">${escapeHtml(row.measure)}</td>
                   <td class="wc-performance-value">${escapeHtml(row.actual2023)}</td>
                   <td class="wc-performance-value">${escapeHtml(row.actual2024)}</td>
