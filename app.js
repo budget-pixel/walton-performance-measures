@@ -1,3 +1,39 @@
+const app = document.getElementById("app") || document.getElementById("wc-performance-measures");
+
+const urlParams = new URLSearchParams(window.location.search);
+const selectedDepartment = String(
+  app?.dataset?.department ||
+  urlParams.get("department") ||
+  ""
+).trim().toLowerCase();
+
+function escapeHtml(value){
+  return String(value ?? "")
+    .replace(/&/g,"&amp;")
+    .replace(/</g,"&lt;")
+    .replace(/>/g,"&gt;")
+    .replace(/"/g,"&quot;")
+    .replace(/'/g,"&#039;");
+}
+
+function normalizeValue(value){
+  return String(value ?? "")
+    .trim()
+    .toLowerCase()
+    .replace(/&/g,"and")
+    .replace(/[^a-z0-9]+/g,"-")
+    .replace(/^-+|-+$/g,"");
+}
+
+function departmentMatches(record, selected){
+  if(!selected){
+    return true;
+  }
+
+  return normalizeValue(record.department) === normalizeValue(selected) ||
+         String(record.department || "").trim().toLowerCase() === selected;
+}
+
 function countRowsWithSameObjective(rows, startIndex){
   const objective = String(rows[startIndex]?.objective || "").trim();
   let count = 0;
@@ -16,7 +52,8 @@ function countRowsWithSameObjective(rows, startIndex){
 }
 
 function renderDepartment(record){
-  const totalRows = record.rows.length;
+  const rows = Array.isArray(record.rows) ? record.rows : [];
+  const totalRows = Math.max(rows.length, 1);
 
   return `
     <section class="wc-performance-card">
@@ -44,12 +81,12 @@ function renderDepartment(record){
             </tr>
           </thead>
           <tbody>
-            ${record.rows.map((row, index) => {
-              const previousObjective = index > 0 ? String(record.rows[index - 1]?.objective || "").trim() : "";
+            ${rows.map((row, index) => {
+              const previousObjective = index > 0 ? String(rows[index - 1]?.objective || "").trim() : "";
               const currentObjective = String(row.objective || "").trim();
               const isFirstRow = index === 0;
               const isFirstObjectiveRow = currentObjective !== previousObjective;
-              const objectiveRowspan = countRowsWithSameObjective(record.rows, index);
+              const objectiveRowspan = countRowsWithSameObjective(rows, index);
 
               return `
                 <tr>
@@ -75,3 +112,34 @@ function renderDepartment(record){
     </section>
   `;
 }
+
+function renderApp(){
+  if(!app){
+    return;
+  }
+
+  const allRecords = window.wcPerformanceMeasures || [];
+  const records = allRecords.filter(record => departmentMatches(record, selectedDepartment));
+  const isFiltered = Boolean(selectedDepartment);
+  const isEmbedded = app.id === "wc-performance-measures" || isFiltered;
+
+  app.innerHTML = `
+    <main class="wc-performance-page ${isEmbedded ? "is-embedded" : ""}">
+      ${!isEmbedded ? `
+        <header class="wc-performance-header">
+          <h1>Departmental Goals, Objectives, and Performance Measures</h1>
+          <p>
+            Review departmental goals, objectives, and performance measures used to track service delivery, operational outcomes, and budget priorities.
+          </p>
+        </header>
+      ` : ""}
+
+      ${records.length
+        ? `<div style="display:grid;gap:28px;">${records.map(renderDepartment).join("")}</div>`
+        : `<div class="wc-performance-empty">No department performance measures found for this selection.</div>`
+      }
+    </main>
+  `;
+}
+
+renderApp();
