@@ -51,9 +51,28 @@ function countRowsWithSameObjective(rows, startIndex){
   return count;
 }
 
+function getFiscalHeaders(record){
+  const defaults = {
+    actual2023: "Actual 2022-23",
+    actual2024: "Actual 2023-24",
+    projected2025: "Projected 2024-25",
+    projected2026: "Projected 2025-26"
+  };
+
+  const labels = record?.fiscalYearLabels || record?.fiscalYears || {};
+
+  return {
+    actual2023: labels.actual2023 || labels.actual1 || defaults.actual2023,
+    actual2024: labels.actual2024 || labels.actual2 || defaults.actual2024,
+    projected2025: labels.projected2025 || labels.projected1 || defaults.projected2025,
+    projected2026: labels.projected2026 || labels.projected2 || defaults.projected2026
+  };
+}
+
 function renderDepartment(record){
   const rows = Array.isArray(record.rows) ? record.rows : [];
   const totalRows = Math.max(rows.length, 1);
+  const fiscalHeaders = getFiscalHeaders(record);
 
   return `
     <section class="wc-performance-card">
@@ -74,10 +93,10 @@ function renderDepartment(record){
               <th>Departmental Goal</th>
               <th>Objective</th>
               <th>Performance Measure</th>
-              <th>Actual 2022-23</th>
-              <th>Actual 2023-24</th>
-              <th>Projected 2024-25</th>
-              <th>Projected 2025-26</th>
+              <th>${escapeHtml(fiscalHeaders.actual2023)}</th>
+              <th>${escapeHtml(fiscalHeaders.actual2024)}</th>
+              <th>${escapeHtml(fiscalHeaders.projected2025)}</th>
+              <th>${escapeHtml(fiscalHeaders.projected2026)}</th>
             </tr>
           </thead>
           <tbody>
