@@ -319,6 +319,13 @@
       const projected2025Col = findColumn(headerMap, ["Projected 2024-25", "Projected 2025-26"]);
       const projected2026Col = findColumn(headerMap, ["Projected 2025-26", "Projected 2026-27"]);
 
+      const fiscalYearLabels = {
+        actual2023: actual2023Col >= 0 ? clean(headerRow[actual2023Col]) : "Actual 2022-23",
+        actual2024: actual2024Col >= 0 ? clean(headerRow[actual2024Col]) : "Actual 2023-24",
+        projected2025: projected2025Col >= 0 ? clean(headerRow[projected2025Col]) : "Projected 2024-25",
+        projected2026: projected2026Col >= 0 ? clean(headerRow[projected2026Col]) : "Projected 2025-26"
+      };
+
       let currentDepartment = "";
       let currentCodeLink = "";
       let currentGoal = "";
@@ -360,6 +367,7 @@
             department: currentDepartment,
             codeLink: currentCodeLink,
             goal: currentGoal,
+            fiscalYearLabels: fiscalYearLabels,
             rows: []
           });
         }
@@ -372,6 +380,10 @@
 
         if(currentGoal && !record.goal){
           record.goal = currentGoal;
+        }
+
+        if(!record.fiscalYearLabels){
+          record.fiscalYearLabels = fiscalYearLabels;
         }
 
         record.rows.push({
