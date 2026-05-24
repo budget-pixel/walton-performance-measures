@@ -35,6 +35,9 @@ function departmentMatches(record, selected){
 }
 
 function renderDepartment(record){
+  let previousGoal = "";
+  let previousObjective = "";
+
   return `
     <section class="wc-performance-card">
       <div class="wc-performance-card-header">
@@ -50,8 +53,10 @@ function renderDepartment(record){
         <table class="wc-performance-table">
           <thead>
             <tr>
-              <th>Objectives</th>
-              <th>Performance Measures</th>
+              <th>Code Link</th>
+              <th>Departmental Goal</th>
+              <th>Objective</th>
+              <th>Performance Measure</th>
               <th>Actual 2022-23</th>
               <th>Actual 2023-24</th>
               <th>Projected 2024-25</th>
@@ -59,16 +64,28 @@ function renderDepartment(record){
             </tr>
           </thead>
           <tbody>
-            ${record.rows.map(row => `
-              <tr>
-                <td class="wc-performance-objective">${escapeHtml(row.objective)}</td>
-                <td class="wc-performance-measure">${escapeHtml(row.measure)}</td>
-                <td class="wc-performance-value">${escapeHtml(row.actual2023)}</td>
-                <td class="wc-performance-value">${escapeHtml(row.actual2024)}</td>
-                <td class="wc-performance-value">${escapeHtml(row.projected2025)}</td>
-                <td class="wc-performance-value">${escapeHtml(row.projected2026)}</td>
-              </tr>
-            `).join("")}
+            ${record.rows.map(row => {
+              const currentGoal = String(record.goal || "").trim();
+              const currentObjective = String(row.objective || "").trim();
+              const showGoal = currentGoal && currentGoal !== previousGoal;
+              const showObjective = currentObjective && currentObjective !== previousObjective;
+
+              previousGoal = currentGoal || previousGoal;
+              previousObjective = currentObjective || previousObjective;
+
+              return `
+                <tr>
+                  <td class="wc-performance-code">${showGoal ? escapeHtml(record.codeLink) : ""}</td>
+                  <td class="wc-performance-goal">${showGoal ? escapeHtml(record.goal) : ""}</td>
+                  <td class="wc-performance-objective">${showObjective ? escapeHtml(row.objective) : ""}</td>
+                  <td class="wc-performance-measure">${escapeHtml(row.measure)}</td>
+                  <td class="wc-performance-value">${escapeHtml(row.actual2023)}</td>
+                  <td class="wc-performance-value">${escapeHtml(row.actual2024)}</td>
+                  <td class="wc-performance-value">${escapeHtml(row.projected2025)}</td>
+                  <td class="wc-performance-value">${escapeHtml(row.projected2026)}</td>
+                </tr>
+              `;
+            }).join("")}
           </tbody>
         </table>
       </div>
